@@ -35,12 +35,12 @@ def compute_stats(sample):
 	
 	return res
 	
-def biased_filter(sample, pro_a_bias = 1):
+def biased_filter(sample, pro_a_bias = 1, strictness = 1):
 	res = []
 	alpha = 0.5
 	_beta = 2
 	mean = sum(v for (v, _) in sample)/float(len(sample))
-	_gamma = mean
+	_gamma = mean * float(strictness)
 	for item in sample:
 		value, kind = item
 		if value <= 0:
@@ -69,11 +69,11 @@ def main():
 	stats = compute_stats(general_population)
 	print "General population:", stats, "\n\n"
 	
-	tier1_filtered = biased_filter(general_population, pro_a_bias = 10)
+	tier1_filtered = biased_filter(general_population, pro_a_bias = 10, strictness = 0.5)
 	stats = compute_stats(tier1_filtered)
 	print "After tier 1 filtering:", stats, "\n\n"
 
-	tier2_filtered = biased_filter(tier1_filtered, pro_a_bias = 0.1)
+	tier2_filtered = biased_filter(tier1_filtered, pro_a_bias = 1, strictness = 0.1)
 	stats = compute_stats(tier2_filtered)
 	print "After tier 2 filtering:", stats, "\n\n"
 	
